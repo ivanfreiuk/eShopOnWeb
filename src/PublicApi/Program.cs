@@ -29,7 +29,10 @@ builder.Services.AddEndpoints();
 
 // Use to force loading of appsettings.json of test project
 builder.Configuration.AddConfigurationFile("appsettings.test.json");
-builder.Logging.AddConsole();
+//builder.Logging.AddConsole();
+
+// The following line enables Application Insights telemetry collection.
+builder.Services.AddApplicationInsightsTelemetry();
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
@@ -75,7 +78,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: CORS_POLICY,
         corsPolicyBuilder =>
         {
-            corsPolicyBuilder.WithOrigins(baseUrlConfig!.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
+            corsPolicyBuilder.AllowAnyOrigin();
             corsPolicyBuilder.AllowAnyMethod();
             corsPolicyBuilder.AllowAnyHeader();
         });
